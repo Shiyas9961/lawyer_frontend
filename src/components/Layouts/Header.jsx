@@ -40,7 +40,7 @@ const Header = () => {
           </form>
         </div>
 
-        <button /*onClick={() => setShow(true)} */ className='btn btn-primary p-1 fw-bold'>Add Ticket</button>
+        <button /*onClick={() => setShow(true)} */ className='btn btn-primary'>Add Ticket</button>
 
         <nav className="header-nav ms-auto">
           <ul className="d-flex align-items-center">

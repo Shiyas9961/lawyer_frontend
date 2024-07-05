@@ -1,17 +1,17 @@
 import React, { Fragment, useState } from 'react'
 import SideBar from '../components/Layouts/SideBar'
-import ProfileSection from '../components/Layouts/Profile/ProfileSection'
-import UsersSection from '../components/Layouts/Profile/UsersSection'
-import ProjectsSection from '../components/Layouts/Profile/ProjectsSection'
-import TenantSection from '../components/Layouts/Profile/TenantSection'
+import ProfileSection from '../components/Profile/ProfileSection'
+import UsersSection from '../components/Profile/UsersSection'
+import ProjectsSection from '../components/Profile/ProjectsSection'
+import TenantSection from '../components/Profile/TenantSection'
 
 const Profile = () => {
         const [activeSec, setActiveSec] = useState('profile')
 
         const renderSection = () => {
             switch (activeSec) {
-                case 'profile' :qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
-                    return <ProfileSection/>qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq
+                case 'profile' :
+                    return <ProfileSection/>
                 case 'users' :
                     return <UsersSection />
                 case 'projects' :
@@ -35,32 +35,32 @@ const Profile = () => {
             <ul className="nav nav-pills mb-3">
                 <li className="nav-item">
                 <button
-                    className={`nav-link ${activeSection === 'profile' ? 'active' : ''}`}
-                    onClick={() => setActiveSection('profile')}
+                    className={`nav-link ${activeSec === 'profile' ? 'active' : ''}`}
+                    onClick={() => setActiveSec('profile')}
                 >
                     Profile
                 </button>
                 </li>
                 <li className="nav-item">
                 <button
-                    className={`nav-link ${activeSection === 'users' ? 'active' : ''}`}
-                    onClick={() => setActiveSection('users')}
+                    className={`nav-link ${activeSec === 'users' ? 'active' : ''}`}
+                    onClick={() => setActiveSec('users')}
                 >
                     Users
                 </button>
                 </li>
                 <li className="nav-item">
                 <button
-                    className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}
-                    onClick={() => setActiveSection('projects')}
+                    className={`nav-link ${activeSec === 'projects' ? 'active' : ''}`}
+                    onClick={() => setActiveSec('projects')}
                 >
                     Projects
                 </button>
                 </li>
                 <li className="nav-item">
                 <button
-                    className={`nav-link ${activeSection === 'tenants' ? 'active' : ''}`}
-                    onClick={() => setActiveSection('tenants')}
+                    className={`nav-link ${activeSec === 'tenants' ? 'active' : ''}`}
+                    onClick={() => setActiveSec('tenants')}
                 >
                     Tenants
                 </button>
