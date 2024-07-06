@@ -1,8 +1,72 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const ProfileSection = () => {
+
+    const { user } = useSelector(state => state.auth)
+
   return (
-    <div>ProfileSection</div>
+    <div className='container mt-4'>
+      <h2 className='mb-4'>My Profile</h2>
+      <div className="row justify-content-center">
+        <div className="col-12 col-lg-10">
+          <div className="card shadow-sm">
+            <div className="card-body px-4">
+              <div className="row mb-4">
+                <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
+                  Username:
+                </div>
+                <div className="col-12 col-md-9">
+                  <p className="h5">{user.name}</p>
+                </div>
+              </div>
+
+              <div className="row mb-4">
+                <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
+                  Email:
+                </div>
+                <div className="col-12 col-md-9">
+                  <p className="h5">{user.email}</p>
+                </div>
+              </div>
+
+              <div className="row mb-4">
+                <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
+                  User ID:
+                </div>
+                <div className="col-12 col-md-9">
+                  <p className="h5">{user.sub}</p>
+                </div>
+              </div>
+
+              <div className="row mb-4">
+                <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
+                  Tenant ID:
+                </div>
+                <div className="col-12 col-md-9">
+                  <p className="h5">{user['custom:tenand_id']}</p>
+                </div>
+              </div>
+
+              <div className="row mb-4">
+                <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
+                  Role:
+                </div>
+                <div className="col-12 col-md-9">
+                  <p className="h5">{user['custom:role']}</p>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <button type="button" className="btn btn-primary btn-lg">
+                  Edit Profile
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

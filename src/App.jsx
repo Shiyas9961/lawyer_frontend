@@ -1,5 +1,5 @@
 import './App.css';
-import config from './amplifyconfiguration.json'
+import awsmobile from './aws-exports';
 import { Amplify } from 'aws-amplify';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css'
@@ -12,11 +12,11 @@ import { setToken } from './redux/slices/authslice';
 import useAuthTokens from './hooks/useAuthTokens';
 import Profile from './pages/Profile';
 
-Amplify.configure(config)
+Amplify.configure(awsmobile)
 
 function App() {
   const dispatch = useDispatch()
-  const { idToken } = useAuthTokens(config.aws_user_pools_web_client_id)
+  const { idToken } = useAuthTokens(process.env.REACT_APP_AWS_CLIENT_ID)
 
   useEffect(() => {
     
