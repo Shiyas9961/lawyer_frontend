@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react'
-import SideBar from '../components/Layouts/SideBar'
 import ProfileSection from '../components/Profile/ProfileSection'
 import UsersSection from '../components/Profile/UsersSection'
 import ProjectsSection from '../components/Profile/ProjectsSection'
@@ -26,11 +25,10 @@ const Profile = () => {
         }
     
   return (
-    <Fragment>
-        <SideBar/>
         <main id="main" className="main">
             <div className="pagetitle">
-                <h1><i className="bi bi-chevron-right"></i> User Profile</h1>
+                <h1>
+                    <i className="bi bi-chevron-right"></i> User Profile</h1>
             </div>
             <section className='section dashboard'>
                 <div className="container mt-5">
@@ -84,7 +82,6 @@ const Profile = () => {
                 </div>
             </section>
         </main>
-    </Fragment>
   )
 }
 

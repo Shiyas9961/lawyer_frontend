@@ -11,20 +11,34 @@ import { useDispatch } from 'react-redux';
 import { setToken } from './redux/slices/authslice';
 import useAuthTokens from './hooks/useAuthTokens';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 
 Amplify.configure(awsmobile)
 
 function App() {
   const dispatch = useDispatch()
-  const { idToken } = useAuthTokens(process.env.REACT_APP_AWS_CLIENT_ID)
+  const { idToken, accessToken } = useAuthTokens(process.env.REACT_APP_AWS_CLIENT_ID)
 
   useEffect(() => {
     
     if (idToken) {
-      dispatch(setToken(idToken)); // Store the ID token in the Redux store
+      dispatch(setToken({
+        idToken,
+        accessToken
+      })); // Store the ID token in the Redux store
     }
 
-  }, [idToken, dispatch]);
+  }, [idToken, accessToken, dispatch]);
+
+  useEffect(() => {
+    // Check if the external library is loaded
+    if (window.apexcharts) {
+      // Initialize plugins here
+      window.apexcharts.init();
+    } else {
+      console.error("ApexCharts is not loaded");
+    }
+  }, []);
 
   return (
     <Authenticator hideSignUp={true} className='aws-authenticator'>
@@ -35,6 +49,7 @@ function App() {
                   <Route path='/' element={<Layout/>}>
                     <Route index element={<Home/>} />
                     <Route path='profile' element={<Profile/>} />
+                    <Route path='profile/:id' element={<EditProfile/>}/>
                   </Route>
                 </Routes>
               </BrowserRouter>

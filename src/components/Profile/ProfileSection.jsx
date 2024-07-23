@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const ProfileSection = () => {
 
@@ -58,9 +59,9 @@ const ProfileSection = () => {
               </div>
 
               <div className="text-center">
-                <button type="button" className="btn btn-primary btn-lg">
+                <Link to={`${user.sub}`} className="btn btn-primary btn-lg" >
                   Edit Profile
-                </button>
+                </Link>
               </div>
             </div>
           </div>

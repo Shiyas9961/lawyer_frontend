@@ -4,6 +4,7 @@ import Footer from './Footer'
 import Header from './Header'
 import { useSelector } from 'react-redux'
 import Loading from '../../pages/Loading'
+import SideBar from '../Layouts/SideBar'
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth)
@@ -18,7 +19,10 @@ const Layout = () => {
       {/* Header */}
       <Header />
       {/* Main components */}
-      <Outlet/>
+      <Fragment>
+        <SideBar/>
+        <Outlet/>
+      </Fragment>
       {/* Footer */}
       <Footer/>
     </Fragment>

@@ -1,5 +1,4 @@
-import React, { Fragment} from 'react'
-import SideBar from '../components/Layouts/SideBar'
+import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Home = () => {
@@ -7,9 +6,6 @@ const Home = () => {
   const { user } = useSelector(state => state.auth)
 
   return (
-    <Fragment>
-        {/* Side Bar Component */}
-        <SideBar />
         <main id='main' className='main'>
           <div className="pagetitle">
           <h1><i className="bi bi-chevron-right"></i> Dashboard</h1>
@@ -21,7 +17,6 @@ const Home = () => {
           </section>
           </div>
         </main>
-    </Fragment>
     )
 
 }
