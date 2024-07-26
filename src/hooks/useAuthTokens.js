@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 const useAuthTokens = (userPoolWebClientId) => {
-  const [tokens, setTokens] = useState({ accessToken: null, idToken: null });
+  const [tokens, setTokens] = useState({ accessToken: null, idToken: null, user : null });
 
   useEffect(() => {
     const fetchTokensFromStorage = () => {

@@ -1,19 +1,74 @@
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { editUserFail, editUserSuccess, fetchUserFail, fetchUserStart, fetchUserSuccess } from '../redux/slices/userSlice'
+import Loading from './Loading'
 
 const EditProfile = () => {
+    const { id } = useParams()
+    const { user, token } = useSelector(state => state.auth)
+    const { user : userDetails } = useSelector(state => state.user)
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const dispatch = useDispatch()
 
-    const { user } = useSelector(state => state.auth)
-    const [name, setName] = useState(user.name)
-    const [phone, setPhone] = useState(user.phone_number)
 
-    const handleSaveClick = () => {
-        console.log(user)
+    const handleSaveClick = async () => {
+        const data = {
+          username : name,
+          phone_no : phone
+        }
+        try{
+          const response = await axios.put(`http://localhost:8000/users/${id}/`, data, {
+            headers : {
+              Authorization : `Bearer ${token.idToken}`
+            }
+          })
+          if (response.status === 200){
+            dispatch(editUserSuccess(response.data.message))
+          }
+        }catch(err){
+          dispatch(editUserFail(err.toString()))
+        }
     }
 
     useEffect(() => {
-        setName(user.name)
-    },[user])
+
+      const fetchUserDetails = async () => {
+        try{
+          dispatch(fetchUserStart())
+          const response = await axios.get(`http://localhost:8000/users/${id}/`, {
+            headers : {
+              Authorization : `Bearer ${token.idToken}`
+            }
+          })
+          if (response.status === 200) {
+            dispatch(fetchUserSuccess(response.data))
+          }  
+        }catch(error){
+          dispatch(fetchUserFail(error.toString()))
+        }
+      }
+
+      fetchUserDetails()
+    },[dispatch, id])
+
+    useEffect(() => {
+
+      if(userDetails) {
+        setName(userDetails.username)
+        setPhone(userDetails.phone_no)
+      }
+    }, [userDetails])
+
+    if (userDetails){
+      if (userDetails.status === 'loading') {
+        return (
+          <Loading />
+        )
+    }
+  }
 
   return (
     <main id='main' className='main'>
