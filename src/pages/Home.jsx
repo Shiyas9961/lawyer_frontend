@@ -2,8 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Home = () => {
-  
-  const { user } = useSelector(state => state.auth)
+  const { user : userDetails } = useSelector(state => state.user)
 
   return (
         <main id='main' className='main'>
@@ -11,7 +10,7 @@ const Home = () => {
           <h1><i className="bi bi-chevron-right"></i> Dashboard</h1>
           <section className='section dashboard'>
             <div className='container mt-5'>
-              <h2>Hello, {user.name}</h2>
+              <h2>Hello, {userDetails?.username}</h2>
               <h3>This is Dashboard Page</h3>
             </div>
           </section>

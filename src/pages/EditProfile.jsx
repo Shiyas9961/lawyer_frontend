@@ -20,7 +20,7 @@ const EditProfile = () => {
           phone_no : phone
         }
         try{
-          const response = await axios.put(`http://localhost:8000/users/${id}/`, data, {
+          const response = await axios.put(`http://localhost:8000/users/user/${id}/`, data, {
             headers : {
               Authorization : `Bearer ${token.idToken}`
             }
