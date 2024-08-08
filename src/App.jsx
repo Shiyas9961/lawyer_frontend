@@ -6,7 +6,7 @@ import '@aws-amplify/ui-react/styles.css'
 import Home from './pages/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layouts/Layout';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken } from './redux/slices/authslice';
 import useAuthTokens from './hooks/useAuthTokens';
@@ -14,6 +14,8 @@ import Profile from './pages/Profile';
 import EditProfile from './pages/EditProfile';
 import { fetchUserFail, fetchUserStart, fetchUserSuccess } from './redux/slices/userSlice';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import EditUser from './pages/EditUser';
 
 Amplify.configure(awsmobile)
 
@@ -21,6 +23,7 @@ function App() {
   const dispatch = useDispatch()
   const { idToken, accessToken } = useAuthTokens(process.env.REACT_APP_AWS_CLIENT_ID)
   const { token, user } = useSelector(state => state.auth)
+  const [toggle, setToggle] = useState(false)
 
   useEffect(() => {
     
@@ -32,6 +35,10 @@ function App() {
     }
 
   }, [idToken, accessToken, dispatch]);
+
+  const handleToggleClick = () => {
+    setToggle(!toggle)
+  }
 
 
 
@@ -68,15 +75,18 @@ function App() {
     <Authenticator hideSignUp={true} className='aws-authenticator'>
       {
         ({ signOut, user }) => (
+          <div className={`${toggle ? 'toggle-sidebar' : ''}`}>
               <BrowserRouter>
                 <Routes>
-                  <Route path='/' element={<Layout/>}>
+                  <Route path='/' element={<Layout handleToggleClick={handleToggleClick}/>}>
                     <Route index element={<Home/>} />
                     <Route path='profile' element={<Profile/>} />
                     <Route path='profile/:id' element={<EditProfile/>}/>
+                    <Route path='user/:id' element={<EditUser/>} />
                   </Route>
                 </Routes>
               </BrowserRouter>
+          </div>
             )
       }
     </Authenticator>

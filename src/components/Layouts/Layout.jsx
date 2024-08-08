@@ -6,10 +6,12 @@ import { useSelector } from 'react-redux'
 import Loading from '../../pages/Loading'
 import SideBar from '../Layouts/SideBar'
 
-const Layout = () => {
-  const { user } = useSelector((state) => state.auth)
+const Layout = ({handleToggleClick}) => {
+  const { user } = useSelector(state => state.auth)
+  const { status} = useSelector(state => state.user)
 
-  if (!user) {
+
+  if (!user || status === "loading") {
     return (
       <Loading />
     )
@@ -17,7 +19,7 @@ const Layout = () => {
   return (
     <Fragment>
       {/* Header */}
-      <Header />
+      <Header handleToggleClick={handleToggleClick}/>
       {/* Main components */}
       <Fragment>
         <SideBar/>

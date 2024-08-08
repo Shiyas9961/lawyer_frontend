@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     users : null,
     status : 'idle',
-    error : null
+    error : null,
+    message : null
 }
 
 const usersByTenantsSlice = createSlice({
@@ -21,7 +22,18 @@ const usersByTenantsSlice = createSlice({
             state.status = 'fail'
             state.users = null
             state.error = action.payload
-        }
+        },
+        deleteSingleUserStart : (state) => {
+            state.status = 'loading'
+        },
+        deleteSingleUserSuccess : (state, action) => {
+        state.status = 'success'
+        state.message = action.payload
+        },
+        deleteSingleUserFail : (state, action) => {
+        state.status = 'fail'
+        state.error = action.payload
+        },
     }
 })
 
@@ -29,7 +41,10 @@ const usersByTenantsSlice = createSlice({
 export const {
     fetchUsersByTenantStart,
     fetchUsersByTenantSuccess,
-    fetchUsersByTenantFail
+    fetchUsersByTenantFail,
+    deleteSingleUserStart,
+    deleteSingleUserSuccess,
+    deleteSingleUserFail
 } = usersByTenantsSlice.actions
 
 export default usersByTenantsSlice.reducer

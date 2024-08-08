@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 import { signOut } from 'aws-amplify/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearAuth } from '../../redux/slices/authslice'
+import Loading from '../../pages/Loading'
 
-const Header = () => {
+const Header = ({handleToggleClick}) => {
 
-  const { user } = useSelector(state => state.auth)
+  const {user : userDetails, status} = useSelector(state => state.user)
   const dispatch = useDispatch()
 
   const handleLogout = async () => {
@@ -20,7 +21,9 @@ const Header = () => {
     }
     
   }
-
+  if (status === 'loading') {
+    return <Loading/>
+  }
   return (
     <Fragment>
       <header id="header" className="header fixed-top d-flex align-items-center p-auto">
@@ -30,7 +33,7 @@ const Header = () => {
             <img src="assets/img/logo.png" alt="" />
             <span className="d-none d-lg-block">NiceAdmin</span>
           </Link>
-          <i className="bi bi-list toggle-sidebar-btn"></i>
+          <i className="bi bi-list toggle-sidebar-btn" onClick={() => handleToggleClick()}></i>
         </div>
 
         <div className="search-bar">
@@ -196,12 +199,12 @@ const Header = () => {
 
               <a className="nav-link nav-profile d-flex align-items-center pe-0" href="/" data-bs-toggle="dropdown">
                 <img src="assets/img/profile-img.jpg" alt="Profile" className="rounded-circle" />
-                <span className="d-none d-md-block dropdown-toggle ps-2">{user?.name}</span>
+                <span className="d-none d-md-block dropdown-toggle ps-2">{userDetails?.username}</span>
               </a>
 
               <ul className="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 <li className="dropdown-header">
-                  <h6>{user?.name}</h6>
+                  <h6>{userDetails?.username}</h6>
                   <span>Web Develepor</span>
                 </li>
                 <li>

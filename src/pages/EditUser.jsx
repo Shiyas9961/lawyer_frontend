@@ -1,63 +1,85 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { editUserFail, editUserStart, editUserSuccess } from '../redux/slices/userSlice'
+import { editSingleUserFail, editSingleUserStart, editSingleUserSuccess, fetchSingleUserFail, fetchSingleUserStart, fetchSingleUserSuccess } from '../redux/slices/singleUserSlice'
+import axios from 'axios'
 import Loading from './Loading'
 
-const EditProfile = () => {
-    const { id } = useParams()
-    const { token } = useSelector(state => state.auth)
-    const { user : userDetails, status } = useSelector(state => state.user)
-    const [name, setName] = useState('')
-    const [phone, setPhone] = useState('')
-    const dispatch = useDispatch()
+const EditUser = () => {
 
+  const { user : singleUser, status } = useSelector(state => state.singleUser)
+  const { user : userDetails } = useSelector(state => state.user)
+  const { token } = useSelector(state => state.auth)
+  const [username, setUsername] = useState('')
+  const [phoneNo, setPhoneNo] = useState('')
+  const [role, setRole] = useState('')
+  const { id } = useParams()
+  const dispatch = useDispatch()
 
-    const handleSaveClick = async () => {
-        const data = {}
-        if (name) {
-          data['name'] = name
-        }
-        if (phone) {
-          data['phone_no'] = phone
-        }
-        try{
-          dispatch(editUserStart())
-          const response = await axios.put(`http://localhost:8000/users/user/${id}/`, data, {
-            headers : {
-              Authorization : `Bearer ${token.idToken}`
-            }
-          })
-          if (response.status === 200){
-            dispatch(editUserSuccess(response.data.message))
-          }
-        }catch(err){
-          dispatch(editUserFail(err.toString()))
-        }
+  const handleSaveClick = async () => {
+    const data = {}
+    if (username) {
+      data['username'] = username
     }
-
-    useEffect(() => {
-
-      if(userDetails) {
-        setName(userDetails.username)
-        setPhone(userDetails.phone_no)
+    if (phoneNo) {
+      data['phone_no'] = phoneNo
+    }
+    if (role) {
+      data['role'] = role
+    }
+    try{
+      dispatch(editSingleUserStart())
+      const response = await axios.put(`http://localhost:8000/users/user/${id}/`, data, {
+        headers : {
+          Authorization : `Bearer ${token.idToken}`
+        }
+      })
+      if (response.status === 200){
+        dispatch(editSingleUserSuccess(response.data.message))
       }
-    }, [userDetails])
+    }catch(err){
+      dispatch(editSingleUserFail(err.toString()))
+        }
+  }
 
-      if (status === 'loading') {
-        return (
-          <Loading />
-        )
-    } 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try{
+        dispatch(fetchSingleUserStart())
+        const response = await axios.get(`http://localhost:8000/users/user/${id}/`, {
+          headers : {
+            Authorization : `Bearer ${token.idToken}`
+          }
+        })
+        if (response.status === 200){
+          dispatch(fetchSingleUserSuccess(response.data))
+        }
+      }catch(err){
+        dispatch(fetchSingleUserFail(err.toString()))
+      }
+    }
+    fetchUserDetails()
+  },[dispatch, id])
+
+  useEffect(() => {
+    if (singleUser) {
+      setUsername(singleUser.username)
+      setPhoneNo(singleUser.phone_no)
+      setRole(singleUser.role)
+    }
+  },[singleUser])
+
+  if (status === "loading") {
+    return <Loading/>
+  }
 
   return (
     <main id='main' className='main'>
         <div className="pagetitle">
-            <h1><i className='bi bi-chevron-right'></i>Profile Edit</h1>
+            <h1><i className='bi bi-chevron-right'></i>Edit User</h1>
         </div>
         <section className='dashboard section'>
-            <div className="row justify-content-center">
+          <div className="row justify-content-center">
               <div className="col-12 col-lg-10">
                 <div className="card shadow-sm">
                   <div className="card-body px-4">
@@ -70,8 +92,9 @@ const EditProfile = () => {
                           type="text"
                           className="form-control"
                           name="username"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          disabled = { (singleUser?.role === "superadmin") || (((userDetails?.role === "admin") &&  (singleUser?.role === "admin"))) }
                         />
                       </div>
                     </div>
@@ -85,7 +108,7 @@ const EditProfile = () => {
                           type="email"
                           className="form-control"
                           name="email"
-                          value={userDetails?.email}
+                          value={singleUser?.email}
                           disabled
                         />
                       </div>
@@ -100,7 +123,7 @@ const EditProfile = () => {
                           type="text"
                           className="form-control"
                           name="userid"
-                          value={userDetails?.user_id}
+                          value={singleUser?.user_id}
                           disabled
                         />
                       </div>
@@ -115,8 +138,9 @@ const EditProfile = () => {
                           type="text"
                           className="form-control"
                           name="phone_no"
-                          value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          value={phoneNo}
+                          onChange={(e) => setPhoneNo(e.target.value)}
+                          disabled = { (singleUser?.role === "superadmin") || (((userDetails?.role === "admin") &&  (singleUser?.role === "admin"))) }
                         />
                       </div>
                     </div>
@@ -130,8 +154,9 @@ const EditProfile = () => {
                           type="text"
                           className="form-control"
                           name="role"
-                          value={userDetails?.role}
-                          disabled
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
+                          disabled = { (singleUser?.role === "superadmin") || (((userDetails?.role === "admin") &&  (singleUser?.role === "admin"))) }
                         />
                       </div>
                     </div>
@@ -150,4 +175,4 @@ const EditProfile = () => {
   )
 }
 
-export default EditProfile
+export default EditUser
