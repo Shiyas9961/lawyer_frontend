@@ -2,22 +2,37 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { editUserFail, editUserStart, editUserSuccess } from '../redux/slices/userSlice'
+import { editUserFail, editUserStart, editUserSuccess, fetchUserFail, fetchUserStart, fetchUserSuccess } from '../redux/slices/userSlice'
 import Loading from './Loading'
 
 const EditProfile = () => {
     const { id } = useParams()
-    const { token } = useSelector(state => state.auth)
+    const { token, user } = useSelector(state => state.auth)
     const { user : userDetails, status } = useSelector(state => state.user)
-    const [name, setName] = useState('')
+    const [username, setUsername] = useState('')
     const [phone, setPhone] = useState('')
     const dispatch = useDispatch()
 
+    const fetchUserDetails = async () => {
+      try{
+        dispatch(fetchUserStart())
+        const response = await axios.get(`http://localhost:8000/users/user/${user.sub}/`, {
+          headers : {
+            Authorization : `Bearer ${token.idToken}`
+          }
+        })
+        if (response.status === 200){
+          dispatch(fetchUserSuccess(response.data))
+        }
+      }catch(err){
+        dispatch(fetchUserFail(err.toString()))
+      }
+    }
 
     const handleSaveClick = async () => {
         const data = {}
-        if (name) {
-          data['name'] = name
+        if (username) {
+          data['username'] = username
         }
         if (phone) {
           data['phone_no'] = phone
@@ -31,6 +46,7 @@ const EditProfile = () => {
           })
           if (response.status === 200){
             dispatch(editUserSuccess(response.data.message))
+            fetchUserDetails()
           }
         }catch(err){
           dispatch(editUserFail(err.toString()))
@@ -40,14 +56,14 @@ const EditProfile = () => {
     useEffect(() => {
 
       if(userDetails) {
-        setName(userDetails.username)
+        setUsername(userDetails.username)
         setPhone(userDetails.phone_no)
       }
     }, [userDetails])
 
       if (status === 'loading') {
         return (
-          <Loading />
+          <Loading compon={"main"}/>
         )
     } 
 
@@ -70,8 +86,8 @@ const EditProfile = () => {
                           type="text"
                           className="form-control"
                           name="username"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
                         />
                       </div>
                     </div>

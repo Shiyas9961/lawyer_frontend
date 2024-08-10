@@ -4,3 +4,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.main_loader{
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.sub_loader{
+  min-height: 50vh;
+  min-width: 50vw;
+}

@@ -39,7 +39,7 @@ const EditUser = () => {
       }
     }catch(err){
       dispatch(editSingleUserFail(err.toString()))
-        }
+      }
   }
 
   useEffect(() => {
@@ -70,7 +70,9 @@ const EditUser = () => {
   },[singleUser])
 
   if (status === "loading") {
-    return <Loading/>
+    return (
+        <Loading compon={"not-main"}/>
+      )
   }
 
   return (

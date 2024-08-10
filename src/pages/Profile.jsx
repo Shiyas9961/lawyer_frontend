@@ -1,28 +1,14 @@
-import React, { Fragment, useState } from 'react'
-import ProfileSection from '../components/Profile/ProfileSection'
-import UsersSection from '../components/Profile/UsersSection'
-import ProjectsSection from '../components/Profile/ProjectsSection'
-import TenantSection from '../components/Profile/TenantSection'
+import React, { Fragment, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 const Profile = () => {
-        const [activeSec, setActiveSec] = useState('profile')
         const { user } = useSelector(state => state.auth)
+        const location = useLocation()
 
-        const renderSection = () => {
-            switch (activeSec) {
-                case 'profile' :
-                    return <ProfileSection/>
-                case 'users' :
-                    return <UsersSection />
-                case 'projects' :
-                    return <ProjectsSection/>
-                case 'tenants' :
-                    return <TenantSection />
-                default :
-                    return <ProfileSection/>
-            }
-        }
+        useEffect(() => {
+            console.log(location.pathname)
+        },[location])
     
   return (
         <main id="main" className="main">
@@ -34,31 +20,31 @@ const Profile = () => {
                 <div className="container mt-5">
                     <ul className="nav nav-pills mb-3">
                         <li className="nav-item">
-                            <button
-                                className={`nav-link ${activeSec === 'profile' ? 'active' : ''}`}
-                                onClick={() => setActiveSec('profile')}
+                            <NavLink
+                                className={({isActive}) => `nav-link ${location.pathname === "/profile" ? 'active' : ''}`}
+                                to={'/profile'}
                             >
                                 Profile
-                            </button>
+                            </NavLink>
                         </li>
                         {
                             ["superadmin", "admin"].includes(user['custom:role']) ? (
                                 <Fragment>
                                     <li className="nav-item">
-                                        <button
-                                            className={`nav-link ${activeSec === 'users' ? 'active' : ''}`}
-                                            onClick={() => setActiveSec('users')}
+                                        <NavLink
+                                            to={'/profile/users'}
+                                            className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}
                                         >
                                             Users
-                                        </button>
+                                        </NavLink>
                                     </li>
                                     <li className="nav-item">
-                                        <button
-                                            className={`nav-link ${activeSec === 'projects' ? 'active' : ''}`}
-                                            onClick={() => setActiveSec('projects')}
+                                        <NavLink
+                                            className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}
+                                            to={'/profile/projects'}
                                         >
                                             Projects
-                                        </button>
+                                        </NavLink>
                                     </li>
                                 </Fragment>
                             ) : null
@@ -67,8 +53,8 @@ const Profile = () => {
                             ["superadmin"].includes(user['custom:role']) ? (
                                 <li className="nav-item">
                                     <button
-                                        className={`nav-link ${activeSec === 'tenants' ? 'active' : ''}`}
-                                        onClick={() => setActiveSec('tenants')}
+                                        className={({isActive}) => `nav-link ${isActive ?'active' : ''}`}
+                                        to={'/profile/tenants'}
                                     >
                                         Tenants
                                     </button>
@@ -77,7 +63,7 @@ const Profile = () => {
                         }
                     </ul>
                     <div>
-                        {renderSection()}
+                        <Outlet/>
                     </div>
                 </div>
             </section>

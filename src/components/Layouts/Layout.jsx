@@ -13,7 +13,7 @@ const Layout = ({handleToggleClick}) => {
 
   if (!user || status === "loading") {
     return (
-      <Loading />
+      <Loading compon={"main"}/>
     )
   }
   return (

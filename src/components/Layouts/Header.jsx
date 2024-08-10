@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { signOut } from 'aws-amplify/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearAuth } from '../../redux/slices/authslice'
-import Loading from '../../pages/Loading'
 
 const Header = ({handleToggleClick}) => {
 
@@ -20,9 +19,6 @@ const Header = ({handleToggleClick}) => {
       console.log(err)
     }
     
-  }
-  if (status === 'loading') {
-    return <Loading/>
   }
   return (
     <Fragment>

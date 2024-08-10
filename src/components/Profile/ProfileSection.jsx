@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const ProfileSection = () => {
 
-    const { user } = useSelector(state => state.auth)
+  const { user : userDetails } = useSelector(state => state.user)
 
   return (
     <div className='container mt-4'>
@@ -18,7 +18,7 @@ const ProfileSection = () => {
                   Username:
                 </div>
                 <div className="col-12 col-md-9">
-                  <p className="h5">{user.name}</p>
+                  <p className="h5">{userDetails?.username}</p>
                 </div>
               </div>
 
@@ -27,7 +27,7 @@ const ProfileSection = () => {
                   Email:
                 </div>
                 <div className="col-12 col-md-9">
-                  <p className="h5">{user.email}</p>
+                  <p className="h5">{userDetails?.email}</p>
                 </div>
               </div>
 
@@ -36,7 +36,7 @@ const ProfileSection = () => {
                   User ID:
                 </div>
                 <div className="col-12 col-md-9">
-                  <p className="h5">{user.sub}</p>
+                  <p className="h5">{userDetails?.user_id}</p>
                 </div>
               </div>
 
@@ -45,7 +45,7 @@ const ProfileSection = () => {
                   Tenant ID:
                 </div>
                 <div className="col-12 col-md-9">
-                  <p className="h5">{user['custom:tenand_id']}</p>
+                  <p className="h5">{userDetails?.tenant}</p>
                 </div>
               </div>
 
@@ -54,12 +54,12 @@ const ProfileSection = () => {
                   Role:
                 </div>
                 <div className="col-12 col-md-9">
-                  <p className="h5">{user['custom:role']}</p>
+                  <p className="h5">{userDetails?.role}</p>
                 </div>
               </div>
 
               <div className="text-center">
-                <Link to={`${user.sub}`} className="btn btn-primary btn-lg" >
+                <Link to={`/profile/my-self/${userDetails?.user_id}`} className="btn btn-primary btn-lg" >
                   Edit Profile
                 </Link>
               </div>

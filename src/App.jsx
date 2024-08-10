@@ -16,6 +16,10 @@ import { fetchUserFail, fetchUserStart, fetchUserSuccess } from './redux/slices/
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import EditUser from './pages/EditUser';
+import ProfileSection from './components/Profile/ProfileSection';
+import ProjectsSection from './components/Profile/ProjectsSection';
+import TenantSection from './components/Profile/TenantSection';
+import UsersSection from './components/Profile/UsersSection';
 
 Amplify.configure(awsmobile)
 
@@ -80,8 +84,13 @@ function App() {
                 <Routes>
                   <Route path='/' element={<Layout handleToggleClick={handleToggleClick}/>}>
                     <Route index element={<Home/>} />
-                    <Route path='profile' element={<Profile/>} />
-                    <Route path='profile/:id' element={<EditProfile/>}/>
+                    <Route path='profile' element={<Profile/>} >
+                      <Route path='users' element={<UsersSection/>} />
+                      <Route index element={<ProfileSection/>} />
+                      <Route path='projects' element={<ProjectsSection/>} />
+                      <Route path='tenants' element={<TenantSection/>} />
+                    </Route>
+                    <Route path='profile/my-self/:id' element={<EditProfile/>}/>
                     <Route path='user/:id' element={<EditUser/>} />
                   </Route>
                 </Routes>
