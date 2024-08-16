@@ -5,13 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUsersByTenantFail, fetchUsersByTenantStart, fetchUsersByTenantSuccess, deleteSingleUserFail, deleteSingleUserStart, deleteSingleUserSuccess } from '../../redux/slices/usersByTenantsSlice'
 import Loading from '../../pages/Loading'
 import { Link } from 'react-router-dom'
+import RegisterUser from './RegisterUser'
+import ErrorMessage from '../Layouts/ErrorMessage'
 
 const UsersSection = () => {
     const [ usersData, setUsersData ] = useState([])
     const dispatch = useDispatch()
     const { token } = useSelector(state => state.auth)
-    const { users, status } = useSelector(state => state.usersByTenants)
+    const { users, status, error } = useSelector(state => state.usersByTenants)
     const { user : userDetails } = useSelector(state => state.user)
+    const { status : registerSts } = useSelector(state => state.registerUser)
+    const [showError, setShowError] = useState(false)
 
     const fetchUsersByTenants = async () => {
         try{
@@ -30,6 +34,22 @@ const UsersSection = () => {
     }
 
     useEffect(() => {
+        if (error) {
+          const timer = setTimeout(() => {
+            setShowError(true);
+          }, 500); // Delay of 2 seconds before showing the error
+    
+          return () => clearTimeout(timer); // Cleanup the timer on component unmount
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if(registerSts === "success"){
+            fetchUsersByTenants()
+        }
+    },[registerSts])
+
+    useEffect(() => {
         fetchUsersByTenants()
     },[dispatch])
 
@@ -38,6 +58,7 @@ const UsersSection = () => {
             setUsersData(users)
         }
     }, [users])
+    
 
     const handleDeleteClick = async (userId) => {
             try{
@@ -56,6 +77,15 @@ const UsersSection = () => {
             }
     }
 
+    if (showError){
+        return (
+            <div className='container mt-4'>
+                <ErrorMessage error_msg={error} is_main={false}/>
+            </div>
+            
+        )
+    }
+
     if (status === 'loading') {
         return (
             <Loading compon={"not-main"}/>
@@ -66,25 +96,21 @@ const UsersSection = () => {
         <div className="container mt-4">
             <div className='d-flex justify-content-between align-items-center mb-4'>
                 <h2 className="">Users Information Table</h2>
-                <button type="button" class="btn btn-primary d-flex align-items-center gap-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalCenter">
+                <button type="button" className="btn btn-primary d-flex align-items-center gap-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalCenter">
                     Create <FaPlus/>
                 </button>
             </div>
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div className="modal-dialog modal-lg" role="document">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title" id="exampleModalLongTitle">Register User</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div className="modal-body">
+                    <RegisterUser />
                 </div>
                 </div>
             </div>

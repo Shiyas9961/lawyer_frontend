@@ -20,6 +20,7 @@ import ProfileSection from './components/Profile/ProfileSection';
 import ProjectsSection from './components/Profile/ProjectsSection';
 import TenantSection from './components/Profile/TenantSection';
 import UsersSection from './components/Profile/UsersSection';
+import NotFound from './components/Layouts/NotFound';
 
 Amplify.configure(awsmobile)
 
@@ -69,7 +70,7 @@ function App() {
           dispatch(fetchUserSuccess(response.data))
         }
       }catch(err){
-        dispatch(fetchUserFail(err.toString()))
+        dispatch(fetchUserFail(err.message))
       }
     }
     fetchUserDetails()
@@ -93,6 +94,7 @@ function App() {
                     <Route path='profile/my-self/:id' element={<EditProfile/>}/>
                     <Route path='user/:id' element={<EditUser/>} />
                   </Route>
+                  <Route path='*' element={<NotFound/>} />
                 </Routes>
               </BrowserRouter>
           </div>

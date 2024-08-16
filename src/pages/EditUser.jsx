@@ -149,20 +149,16 @@ const EditUser = () => {
 
                     <div className="row mb-4">
                       <div className="col-12 col-md-3 text-muted text-right font-weight-bold">
-                        Role:
+                        Phone Number:
                       </div>
                       <div className="col-12 col-md-9">
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="role"
-                          value={role}
-                          onChange={(e) => setRole(e.target.value)}
-                          disabled = { (singleUser?.role === "superadmin") || (((userDetails?.role === "admin") &&  (singleUser?.role === "admin"))) }
-                        />
+                        <select class="form-control" id="exampleSelect" onChange={(e) => setRole(e.target.value)} defaultValue={role} disabled = { (singleUser?.role === "superadmin") || (((userDetails?.role === "admin") &&  (singleUser?.role === "admin"))) }>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                            { singleUser?.role === "superadmin" ? <option value="superadmin"></option> : null}
+                        </select>
                       </div>
                     </div>
-
                     <div className="text-center">
                       <button type="button" className="btn btn-success btn-lg" onClick={handleSaveClick}>
                         Save Changes

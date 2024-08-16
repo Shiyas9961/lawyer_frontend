@@ -17,6 +17,7 @@ const usersByTenantsSlice = createSlice({
         fetchUsersByTenantSuccess : (state, action) => {
             state.status = 'success'
             state.users = action.payload
+            state.error = null
         },
         fetchUsersByTenantFail : (state, action) => {
             state.status = 'fail'
@@ -29,6 +30,7 @@ const usersByTenantsSlice = createSlice({
         deleteSingleUserSuccess : (state, action) => {
         state.status = 'success'
         state.message = action.payload
+        state.error = null
         },
         deleteSingleUserFail : (state, action) => {
         state.status = 'fail'

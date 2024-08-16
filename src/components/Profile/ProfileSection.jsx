@@ -6,6 +6,7 @@ const ProfileSection = () => {
 
   const { user : userDetails } = useSelector(state => state.user)
 
+
   return (
     <div className='container mt-4'>
       <h2 className='mb-4'>My Profile</h2>

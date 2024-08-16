@@ -1,14 +1,10 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 
 const Profile = () => {
-        const { user } = useSelector(state => state.auth)
+        const { user } = useSelector(state => state.user)
         const location = useLocation()
-
-        useEffect(() => {
-            console.log(location.pathname)
-        },[location])
     
   return (
         <main id="main" className="main">
@@ -28,7 +24,7 @@ const Profile = () => {
                             </NavLink>
                         </li>
                         {
-                            ["superadmin", "admin"].includes(user['custom:role']) ? (
+                            ["superadmin", "admin"].includes(user?.role) ? (
                                 <Fragment>
                                     <li className="nav-item">
                                         <NavLink
@@ -50,7 +46,7 @@ const Profile = () => {
                             ) : null
                         }
                         {
-                            ["superadmin"].includes(user['custom:role']) ? (
+                            ["superadmin"].includes(user?.role) ? (
                                 <li className="nav-item">
                                     <button
                                         className={({isActive}) => `nav-link ${isActive ?'active' : ''}`}

@@ -18,6 +18,7 @@ const userSlice = createSlice({
       fetchUserSuccess : (state, action) => {
         state.status = 'success'
         state.user = action.payload
+        state.error = null
       },
       fetchUserFail : (state, action) => {
         state.status = 'fail'
@@ -30,6 +31,7 @@ const userSlice = createSlice({
       editUserSuccess : (state, action) => {
         state.status = 'success'
         state.message = action.payload
+        state.error = null
       },
       editUserFail : (state, action) => {
         state.status = 'fail'

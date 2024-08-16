@@ -16,6 +16,7 @@ const tenatsSlice = createSlice({
         fetchTentsByUserSuccess : (state, action) => {
             state.status = 'success'
             state.tenants = action.payload
+            state.error = null
         },
         fetchTentsByUserFail : (state, action) => {
             state.status = 'failed'
