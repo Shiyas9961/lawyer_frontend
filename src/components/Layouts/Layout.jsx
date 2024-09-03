@@ -13,7 +13,7 @@ const Layout = ({handleToggleClick}) => {
   const [ showError, setShowError ] = useState(false)
 
   useEffect(() => {
-    if (error) {
+    if (status !== "loading" && error) {
       const timer = setTimeout(() => {
         setShowError(true);
       }, 500); // Delay of 2 seconds before showing the error
